@@ -16,7 +16,7 @@ func TestFindMultipliers(t *testing.T) {
 }
 
 func TestCalculateMultipliers(t *testing.T) {
-	value := []mul{mul{2, 4}, mul{5, 5}, mul{11, 8}, mul{8, 5}}
+	value := []mul{{2, 4}, {5, 5}, {11, 8}, {8, 5}}
 	assert.Equal(t, 161, calculateMultipliers(value))
 }
 
