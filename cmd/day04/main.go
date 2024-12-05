@@ -4,9 +4,13 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"time"
+
+	"github.com/Kukmedis/aoc2024/pkg/utils"
 )
 
 func main() {
+	defer utils.TimeTrack(time.Now(), "Day 4")
 	file, err := os.Open("inputs/day04.txt")
 	if err != nil {
 		panic(err)

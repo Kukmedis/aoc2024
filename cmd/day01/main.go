@@ -6,9 +6,13 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
+
+	"github.com/Kukmedis/aoc2024/pkg/utils"
 )
 
 func main() {
+	defer utils.TimeTrack(time.Now(), "Day 4")
 	file, err := os.Open("inputs/day01.txt")
 	if err != nil {
 		panic(err)
