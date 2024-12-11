@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math"
 	"strconv"
 	"sync"
@@ -8,10 +9,9 @@ import (
 	"github.com/Kukmedis/aoc2024/pkg/utils"
 )
 
-var (
-	mu     sync.Mutex
-	amount int
-)
+var wg sync.WaitGroup
+var amount int
+var lock sync.Mutex
 
 func howManyDigits(num int) int {
 	result := 0
@@ -58,24 +58,34 @@ func blinkTimes(stones []int, times int) []int {
 	return blinked
 }
 
-func blinkRecur(stone int, times int) int {
+func blinkRecur(stone int, times int) {
 	if times == 0 {
-		return 1
-	}
-	if stone == 0 {
-		return blinkRecur(1, times-1)
+		lock.Lock()
+		amount++
+		fmt.Println(amount)
+		lock.Unlock()
+	} else if stone == 0 {
+		wg.Add(1)
+		go blinkRecur(1, times-1)
 	} else if numOfDigits := howManyDigits(stone); numOfDigits%2 == 0 {
 		stone1, stone2 := splitIntoTwo(stone, numOfDigits/2)
-		return blinkRecur(stone1, times-1) + blinkRecur(stone2, times-1)
+		wg.Add(1)
+		go blinkRecur(stone1, times-1)
+		wg.Add(1)
+		go blinkRecur(stone2, times-1)
 	} else {
-		return blinkRecur(stone*2024, times-1)
+		wg.Add(1)
+		go blinkRecur(stone*2024, times-1)
 	}
+	wg.Done()
 }
 
 func blinkRecurStones(stones []int, times int) int {
-	sum := 0
+	amount = 0
 	for _, stone := range stones {
-		sum = sum + blinkRecur(stone, times)
+		wg.Add(1)
+		blinkRecur(stone, times)
 	}
-	return sum
+	wg.Wait()
+	return amount
 }
