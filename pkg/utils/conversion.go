@@ -13,6 +13,14 @@ func ToInt(value string) int {
 	return number
 }
 
+func ToIntFromRune(value string) int {
+	number, err := strconv.Atoi(value)
+	if err != nil {
+		panic(err)
+	}
+	return number
+}
+
 func ToInts(value string, separator string) []int {
 	strings.Split(value, separator)
 	var result []int
