@@ -9,9 +9,10 @@ import (
 	"github.com/Kukmedis/aoc2024/pkg/utils"
 )
 
-var wg sync.WaitGroup
-var amount int
-var lock sync.Mutex
+var (
+	mu     sync.Mutex
+	amount int
+)
 
 func howManyDigits(num int) int {
 	result := 0
@@ -60,6 +61,5 @@ func blinkTimes(stones map[int]int, times int) int {
 	for _, v := range blinked {
 		sum = sum + v
 	}
-	wg.Wait()
-	return amount
+	return sum
 }
