@@ -4,14 +4,8 @@ import (
 	"maps"
 	"math"
 	"strconv"
-	"sync"
 
 	"github.com/Kukmedis/aoc2024/pkg/utils"
-)
-
-var (
-	mu     sync.Mutex
-	amount int
 )
 
 func howManyDigits(num int) int {
