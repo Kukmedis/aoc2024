@@ -19,10 +19,10 @@ func main() {
 	scanner := bufio.NewScanner(file)
 	scanner.Scan()
 	text := scanner.Text()
-	var stones []int
+	stones := make(map[int]int)
 	for _, v := range strings.Split(text, " ") {
-		stones = append(stones, utils.ToInt(v))
+		stones[utils.ToInt(v)]++
 	}
-	fmt.Println(len(blinkTimes(stones, 25)))
-	fmt.Println(blinkRecurStones(stones, 75))
+	fmt.Println(blinkTimes(stones, 25))
+	fmt.Println(blinkTimes(stones, 75))
 }

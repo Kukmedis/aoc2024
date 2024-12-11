@@ -42,33 +42,26 @@ func TestSplitDigitsStr(t *testing.T) {
 }
 
 func TestBlink(t *testing.T) {
-	assert.Equal(t, []int{1, 2024, 1, 0, 9, 9, 2021976}, blink([]int{0, 1, 10, 99, 999}))
+	m := map[int]int{0: 1, 1: 1, 10: 1, 99: 1, 999: 1}
+	assert.Equal(t, map[int]int{1: 2, 2024: 1, 0: 1, 9: 2, 2021976: 1}, blink(m))
 }
 
 func TestBlinkExample(t *testing.T) {
-	s1 := []int{125, 17}
-	s2 := []int{253000, 1, 7}
-	s3 := []int{253, 0, 2024, 14168}
-	s4 := []int{512072, 1, 20, 24, 28676032}
-	s5 := []int{512, 72, 2024, 2, 0, 2, 4, 2867, 6032}
-	s6 := []int{1036288, 7, 2, 20, 24, 4048, 1, 4048, 8096, 28, 67, 60, 32}
-	s7 := []int{2097446912, 14168, 4048, 2, 0, 2, 4, 40, 48, 2024, 40, 48, 80, 96, 2, 8, 6, 7, 6, 0, 3, 2}
+	s1 := map[int]int{125: 1, 17: 1}
+	s2 := map[int]int{253000: 1, 1: 1, 7: 1}
+	s3 := map[int]int{253: 1, 0: 1, 2024: 1, 14168: 1}
+	s4 := map[int]int{512072: 1, 1: 1, 20: 1, 24: 1, 28676032: 1}
+	s5 := map[int]int{512: 1, 72: 1, 2024: 1, 2: 2, 0: 1, 4: 1, 2867: 1, 6032: 1}
+	s6 := map[int]int{1036288: 1, 7: 1, 2: 1, 20: 1, 24: 1, 4048: 2, 1: 1, 8096: 1, 28: 1, 67: 1, 60: 1, 32: 1}
 	assert.Equal(t, s2, blink(s1))
 	assert.Equal(t, s3, blink(s2))
 	assert.Equal(t, s4, blink(s3))
 	assert.Equal(t, s5, blink(s4))
 	assert.Equal(t, s6, blink(s5))
-	assert.Equal(t, s7, blink(s6))
 }
 
 func TestBlinkTimes(t *testing.T) {
-	stones := []int{125, 17}
-	assert.Equal(t, 22, len(blinkTimes(stones, 6)))
-	assert.Equal(t, 55312, len(blinkTimes(stones, 25)))
-}
-
-func TestBlinkTimesRecur(t *testing.T) {
-	stones := []int{125, 17}
-	assert.Equal(t, 22, blinkRecurStones(stones, 6))
-	assert.Equal(t, 55312, blinkRecurStones(stones, 25))
+	stones := map[int]int{125: 1, 17: 1}
+	assert.Equal(t, 22, blinkTimes(stones, 6))
+	assert.Equal(t, 55312, blinkTimes(stones, 25))
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"maps"
 	"math"
 	"strconv"
 	"sync"
@@ -34,48 +35,31 @@ func splitIntoTwoStr(num int) (int, int) {
 	return utils.ToInt(strNum[:divLen]), utils.ToInt(strNum[divLen:])
 }
 
-func blink(stones []int) []int {
-	var resultSlice []int
-	for _, stone := range stones {
+func blink(stones map[int]int) map[int]int {
+	resultMap := make(map[int]int)
+	for stone, number := range stones {
 		if stone == 0 {
-			resultSlice = append(resultSlice, 1)
+			resultMap[1] = number + resultMap[1]
 		} else if numOfDigits := howManyDigits(stone); numOfDigits%2 == 0 {
 			stone1, stone2 := splitIntoTwo(stone, numOfDigits/2)
-			resultSlice = append(resultSlice, stone1)
-			resultSlice = append(resultSlice, stone2)
+			resultMap[stone1] = number + resultMap[stone1]
+			resultMap[stone2] = number + resultMap[stone2]
 		} else {
-			resultSlice = append(resultSlice, stone*2024)
+			multiplied := stone * 2024
+			resultMap[multiplied] = number + resultMap[multiplied]
 		}
 	}
-	return resultSlice
+	return resultMap
 }
 
-func blinkTimes(stones []int, times int) []int {
-	blinked := stones
+func blinkTimes(stones map[int]int, times int) int {
+	blinked := maps.Clone(stones)
 	for range times {
 		blinked = blink(blinked)
 	}
-	return blinked
-}
-
-func blinkRecur(stone int, times int) int {
-	if times == 0 {
-		return 1
-	}
-	if stone == 0 {
-		return blinkRecur(1, times-1)
-	} else if numOfDigits := howManyDigits(stone); numOfDigits%2 == 0 {
-		stone1, stone2 := splitIntoTwo(stone, numOfDigits/2)
-		return blinkRecur(stone1, times-1) + blinkRecur(stone2, times-1)
-	} else {
-		return blinkRecur(stone*2024, times-1)
-	}
-}
-
-func blinkRecurStones(stones []int, times int) int {
 	sum := 0
-	for _, stone := range stones {
-		sum = sum + blinkRecur(stone, times)
+	for _, v := range blinked {
+		sum = sum + v
 	}
 	return sum
 }
