@@ -3,6 +3,7 @@ package utils
 import (
 	"strconv"
 	"strings"
+	"unicode"
 )
 
 func ToInt(value string) int {
@@ -28,4 +29,26 @@ func ToInts(value string, separator string) []int {
 		result = append(result, ToInt(v))
 	}
 	return result
+}
+
+func ExtractIntFrom(input string, marker string) int {
+	startIndex := strings.Index(input, marker) + len(marker)
+	digitInput := input[startIndex:]
+	for i := 0; i < len(digitInput); i++ {
+		if !unicode.IsDigit(rune(digitInput[i])) && digitInput[i] != '-' {
+			return ToInt(digitInput[0:i])
+		}
+	}
+	return ToInt(digitInput)
+}
+
+func ExtractIntFromLast(input string, marker string) int {
+	startIndex := strings.LastIndex(input, marker) + len(marker)
+	digitInput := input[startIndex:]
+	for i := 0; i < len(digitInput); i++ {
+		if !unicode.IsDigit(rune(digitInput[i])) && digitInput[i] != '-' {
+			return ToInt(digitInput[0:i])
+		}
+	}
+	return ToInt(digitInput)
 }
