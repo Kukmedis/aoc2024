@@ -21,4 +21,12 @@ func main() {
 		input = append(input, scanner.Text())
 	}
 	fmt.Println(calcSafety(tickNumber(100, parseInput(input), 101, 103), 101, 103))
+	ticked := parseInput(input)
+	for i := range 10000000000000 {
+		ticked = tick(ticked, 101, 103)
+		printPicture(ticked, 101, 103, i+1)
+		if i%100000 == 0 {
+			fmt.Println(i)
+		}
+	}
 }

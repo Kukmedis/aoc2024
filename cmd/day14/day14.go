@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	"strconv"
+	"os"
+	"strings"
 
 	"github.com/Kukmedis/aoc2024/pkg/utils"
 )
@@ -44,7 +46,6 @@ func tickNumber(number int, robots []robot, xSize int, ySize int) []robot {
 	ticked := robots
 	for range number {
 		ticked = tick(ticked, xSize, ySize)
-		printPicture(ticked, xSize, ySize)
 	}
 	return ticked
 }
@@ -67,8 +68,7 @@ func calcSafety(robots []robot, xSize int, ySize int) int {
 	return q1 * q2 * q3 * q4
 }
 
-func printPicture(robots []robot, xSize int, ySize int) {
-	fmt.Println("")
+func printPicture(robots []robot, xSize int, ySize int, iteration int) {
 	var picture []string
 	for range ySize {
 		var row string
@@ -78,19 +78,25 @@ func printPicture(robots []robot, xSize int, ySize int) {
 		picture = append(picture, row)
 	}
 	for _, r := range robots {
-		num := picture[r.py][r.px]
-		var symbol rune
-		if num == '.' {
-			symbol = '1'
-		} else {
-			symbol = rune(strconv.Itoa(utils.ToInt(string(num)) + 1)[0])
-		}
-		picture[r.py] = replaceAtIndex(picture[r.py], symbol, r.px)
+		picture[r.py] = replaceAtIndex(picture[r.py], '1', r.px)
 	}
+	hasStraight := false
 	for _, p := range picture {
-		fmt.Println(p)
+		hasStraight = strings.Contains(p, "11111111")
+		if hasStraight {
+			break
+		}
 	}
-	fmt.Println("")
+	if hasStraight {
+		fmt.Println("======================", iteration, "=============================")
+		for _, p := range picture {
+			fmt.Println(p)
+		}
+		fmt.Println("======================", iteration, "=============================")
+		input := bufio.NewScanner(os.Stdin)
+		input.Scan()
+	}
+
 }
 
 func replaceAtIndex(in string, r rune, i int) string {
