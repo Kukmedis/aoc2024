@@ -21,4 +21,5 @@ func main() {
 		input = append(input, scanner.Text())
 	}
 	fmt.Println(process(input))
+	fmt.Println(processWide(input))
 }

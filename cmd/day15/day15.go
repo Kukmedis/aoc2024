@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"sort"
 )
 
@@ -71,7 +70,7 @@ func processWide(input []string) int {
 	for _, d := range directions {
 		moveWide(data, d)
 	}
-	return calcScore(data)
+	return calcScoreWide(data)
 }
 
 func move(data [][]rune, direction rune) {
@@ -104,8 +103,6 @@ func move(data [][]rune, direction rune) {
 }
 
 func moveWide(data [][]rune, direction rune) {
-	// print(data)
-	// fmt.Println("Moving", string(direction))
 	robotX, robotY := findRobot(data)
 	var path []*rune
 	if direction == '>' {
@@ -143,10 +140,10 @@ func moveWide(data [][]rune, direction rune) {
 func canPushBoxesUp(data [][]rune, x int, y int, boxes map[box]bool) bool {
 	if data[y][x] == '[' {
 		boxes[box{x, x + 1, y}] = true
-		return canPushBoxesUp(data, x, y+1, boxes) && canPushBoxesUp(data, x+1, y+1, boxes)
+		return canPushBoxesUp(data, x, y-1, boxes) && canPushBoxesUp(data, x+1, y-1, boxes)
 	} else if data[y][x] == ']' {
 		boxes[box{x - 1, x, y}] = true
-		return canPushBoxesUp(data, x, y+1, boxes) && canPushBoxesUp(data, x-1, y+1, boxes)
+		return canPushBoxesUp(data, x, y-1, boxes) && canPushBoxesUp(data, x-1, y-1, boxes)
 	} else if data[y][x] == '#' {
 		return false
 	}
@@ -156,10 +153,10 @@ func canPushBoxesUp(data [][]rune, x int, y int, boxes map[box]bool) bool {
 func canPushBoxesDown(data [][]rune, x int, y int, boxes map[box]bool) bool {
 	if data[y][x] == '[' {
 		boxes[box{x, x + 1, y}] = true
-		return canPushBoxesDown(data, x, y-1, boxes) && canPushBoxesDown(data, x+1, y-1, boxes)
+		return canPushBoxesDown(data, x, y+1, boxes) && canPushBoxesDown(data, x+1, y+1, boxes)
 	} else if data[y][x] == ']' {
 		boxes[box{x - 1, x, y}] = true
-		return canPushBoxesDown(data, x, y-1, boxes) && canPushBoxesDown(data, x-1, y-1, boxes)
+		return canPushBoxesDown(data, x, y+1, boxes) && canPushBoxesDown(data, x-1, y+1, boxes)
 	} else if data[y][x] == '#' {
 		return false
 	}
@@ -234,10 +231,14 @@ func calcScore(data [][]rune) int {
 	return sum
 }
 
-func print(data [][]rune) {
-	fmt.Println("=======================")
-	for _, d := range data {
-		fmt.Println(string(d))
+func calcScoreWide(data [][]rune) int {
+	sum := 0
+	for y, row := range data {
+		for x, c := range row {
+			if c == '[' {
+				sum = y*100 + sum + x
+			}
+		}
 	}
-	fmt.Println("=======================")
+	return sum
 }
