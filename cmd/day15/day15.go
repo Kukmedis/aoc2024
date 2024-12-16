@@ -74,6 +74,35 @@ func processWide(input []string) int {
 	return calcScore(data)
 }
 
+func move(data [][]rune, direction rune) {
+	// print(data)
+	// fmt.Println("Moving", string(direction))
+	robotX, robotY := findRobot(data)
+	var path []*rune
+	if direction == '>' {
+		for i := robotX; data[robotY][i] != '#'; i++ {
+			path = append(path, &data[robotY][i])
+		}
+		push(path)
+	} else if direction == '<' {
+		for i := robotX; data[robotY][i] != '#'; i-- {
+			path = append(path, &data[robotY][i])
+		}
+		push(path)
+	} else if direction == '^' {
+		for i := robotY; data[i][robotX] != '#'; i-- {
+			path = append(path, &data[i][robotX])
+		}
+		push(path)
+	} else if direction == 'v' {
+		for i := robotY; data[i][robotX] != '#'; i++ {
+			path = append(path, &data[i][robotX])
+		}
+		push(path)
+	}
+
+}
+
 func moveWide(data [][]rune, direction rune) {
 	// print(data)
 	// fmt.Println("Moving", string(direction))
