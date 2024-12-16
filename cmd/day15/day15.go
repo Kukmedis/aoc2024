@@ -145,7 +145,7 @@ func canPushBoxesUp(data [][]rune, x int, y int, boxes map[box]bool) bool {
 		boxes[box{x, x + 1, y}] = true
 		return canPushBoxesUp(data, x, y+1, boxes) && canPushBoxesUp(data, x+1, y+1, boxes)
 	} else if data[y][x] == ']' {
-		boxes[box{x - 1, x, y, y}] = true
+		boxes[box{x - 1, x, y}] = true
 		return canPushBoxesUp(data, x, y+1, boxes) && canPushBoxesUp(data, x-1, y+1, boxes)
 	} else if data[y][x] == '#' {
 		return false
